@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="ScamCasino/ScamCasino.vcxproj" Id="c9fb32ef-785c-4519-ab18-1a7b769a5536" />
+</Solution>
