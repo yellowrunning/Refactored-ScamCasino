@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 
-namespace casino
+namespace Casino
 {
     enum class Game
     {
@@ -30,6 +30,13 @@ namespace casino
         Player = 1,
         Banker = 2,
         Tie = 3
+    };
+
+    enum class Choice
+    {
+        Yes = 1,
+        No = 2,
+        Leave = 3
     };
 
     struct GameData

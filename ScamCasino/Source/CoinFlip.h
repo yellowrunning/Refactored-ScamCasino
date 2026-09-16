@@ -1,7 +1,7 @@
 #pragma once
 #include "GameData.h"
 
-namespace casino::coinFlip
+namespace Casino::coinFlip
 {
     void Play(GameData& data, StatisticsData& statistics);
 }

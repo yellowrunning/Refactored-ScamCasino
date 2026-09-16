@@ -1,11 +1,11 @@
 #include "CoinFlip.h"
 #include "Functions.h"
-#include "Constants.h"
+#include "Values.h"
 #include "Statistics.h"
 #include <iostream>
 #include <random>
 
-namespace casino::coinFlip
+namespace Casino::coinFlip
 {
     void Play(GameData& data, StatisticsData& statistics)
     {
@@ -25,7 +25,7 @@ namespace casino::coinFlip
             std::cout << "1. Krona\n";
             std::cout << "2. Klave\n> ";
 
-            if (std::cin >> guess && guess >= constants::coinMinimum && guess <= constants::coinMaximum)
+            if (std::cin >> guess && guess >= Values::coinMinimum && guess <= Values::coinMaximum)
             {
                 break;
             }
@@ -39,7 +39,7 @@ namespace casino::coinFlip
 
         std::random_device seed;
         std::mt19937 rndEngine(seed());
-        std::uniform_int_distribution<int> rndCoin(constants::coinMinimum, constants::coinMaximum);
+        std::uniform_int_distribution<int> rndCoin(Values::coinMinimum, Values::coinMaximum);
         const CoinSide result = static_cast<CoinSide>(rndCoin(rndEngine));
 
         data.balance -= bet;
@@ -57,7 +57,7 @@ namespace casino::coinFlip
         if (choice == result)
         {
             winnings = bet;
-            data.balance += bet * constants::normalPayout;
+            data.balance += bet * Values::normalPayout;
             std::cout << "du vann!\n";
         }
         else

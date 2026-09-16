@@ -2,6 +2,6 @@
 
 int main()
 {
-    casino::menu::Run();
+    Casino::menu::Run();
     return 0;
 }

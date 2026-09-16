@@ -1,15 +1,15 @@
 #include "Functions.h"
-#include "Constants.h"
+#include "Values.h"
 #include <iostream>
 #include <random>
 
-namespace casino::functions
+namespace Casino::functions
 {
     int GetRndInt()
     {
         std::random_device seed;
         std::mt19937 rndEngine(seed());
-        std::uniform_int_distribution<int> rndDist(1, constants::diceSides);
+        std::uniform_int_distribution<int> rndDist(1, Values::diceSides);
         return rndDist(rndEngine);
     }
 
@@ -28,7 +28,7 @@ namespace casino::functions
             std::cout << "Kontobalans: " << data.balance << "kr\n> ";
 
             if (std::cin >> data.currentBet &&
-                data.currentBet >= constants::minimumBet &&
+                data.currentBet >= Values::minimumBet &&
                 data.currentBet <= data.balance)
             {
                 return data.currentBet;
@@ -59,7 +59,7 @@ namespace casino::functions
 
     void AddStats(StatisticsData& statistics, Game game, int bet, int winnings)
     {
-        for (int i = constants::maxRecentGames - 1; i > 0; --i)
+        for (int i = Values::maxRecentGames - 1; i > 0; --i)
         {
             statistics.recentGames[i] = statistics.recentGames[i - 1];
         }
@@ -106,12 +106,12 @@ namespace casino::functions
     {
         const int money = GetTableProfit(statistics, game);
 
-        if (money > constants::moneyMessageLimit)
+        if (money > Values::moneyMessageLimit)
         {
             std::cout << "Du har tj\x84rnat " << money << "kr vid "
                       << TranslateGameId(game) << "-bordet!\n";
         }
-        else if (money < constants::moneyMessageLimit)
+        else if (money < Values::moneyMessageLimit)
         {
             std::cout << "Du har tappat " << -money << "kr vid "
                       << TranslateGameId(game) << "-bordet.\n";
@@ -125,10 +125,10 @@ namespace casino::functions
 
     bool CheckTooMuch(const StatisticsData& statistics, Game game)
     {
-        if (GetTableProfit(statistics, game) > constants::securityLimit)
+        if (GetTableProfit(statistics, game) > Values::securityLimit)
         {
             std::cout << "Du har vunnit f\x94r mycket vid det h\x84r bordet!\n";
-            std::cout << "S\x84kerhetsvakterna eskorterar dig fr\x86n bordet.\n";
+            std::cout << "GTFO\n";
             std::cout << "Du f\x86r fortfarande spela p\x86 andra bord.\n";
             Enter();
             return true;
@@ -141,7 +141,7 @@ namespace casino::functions
     {
         if (data.balance <= 0)
         {
-            std::cout << "Kontobalansen \x84r 0kr. Du kan inte spela mer.\n";
+            std::cout << "Kontobalansen \x84r 0kr. GTFO\n";
         }
     }
 }
