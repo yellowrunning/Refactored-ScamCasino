@@ -44,7 +44,7 @@
     <ClInclude Include="Source\CoinFlip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Constants.h">
+    <ClInclude Include="Source\Values.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Dice.h">

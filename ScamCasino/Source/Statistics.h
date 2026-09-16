@@ -1,7 +1,7 @@
 #pragma once
 #include "GameData.h"
 
-namespace casino::statistics
+namespace Casino::statistics
 {
     void Show(const StatisticsData& statistics, const GameData& data);
 }

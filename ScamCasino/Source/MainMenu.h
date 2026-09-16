@@ -1,6 +1,6 @@
 #pragma once
 
-namespace casino::menu
+namespace Casino::menu
 {
     void Run();
 }

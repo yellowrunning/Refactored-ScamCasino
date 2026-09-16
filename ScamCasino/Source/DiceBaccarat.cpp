@@ -1,10 +1,10 @@
 #include "DiceBaccarat.h"
 #include "Functions.h"
-#include "Constants.h"
+#include "Values.h"
 #include "Statistics.h"
 #include <iostream>
 
-namespace casino::diceBaccarat
+namespace Casino::diceBaccarat
 {
     void Play(GameData& data, StatisticsData& statistics)
     {
@@ -68,13 +68,13 @@ namespace casino::diceBaccarat
         {
             if (winner == BaccaratBet::Tie)
             {
-                winnings = bet * (constants::baccaratTiePayout - 1);
-                data.balance += bet * constants::baccaratTiePayout;
+                winnings = bet * (Values::baccaratTiePayout - 1);
+                data.balance += bet * Values::baccaratTiePayout;
             }
             else
             {
                 winnings = bet;
-                data.balance += bet * constants::normalPayout;
+                data.balance += bet * Values::normalPayout;
             }
 
             std::cout << "du vann!\n";

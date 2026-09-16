@@ -1,6 +1,6 @@
 #pragma once
 
-namespace casino::constants
+namespace Casino::Values
 {
     constexpr int startingMoney = 1000;
     constexpr int minimumBet = 1;

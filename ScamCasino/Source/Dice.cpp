@@ -1,10 +1,11 @@
 #include "Dice.h"
 #include "Functions.h"
-#include "Constants.h"
+#include "Values.h"
 #include "Statistics.h"
 #include <iostream>
+#include "GameData.h"
 
-namespace casino::dice
+namespace Casino::dice
 {
     void Play(GameData& data, StatisticsData& statistics)
     {
@@ -15,6 +16,39 @@ namespace casino::dice
             return;
         }
 
+   /*   int choice{};
+        while (true)
+        {
+            std::cout << "1. Instruktioner\n";
+            std::cout << "2. Spela\n";
+            std::cout << "3. Lämna bord (inga pengar kommer tappas)";
+
+            if (std::cin >> choice && (choice == 1 || choice == 2 || choice == 3 ))
+            {
+                break;
+            }
+
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << "Skriv bara 1 eller 2 eller 3.\n";
+        }
+
+        const Choice choice();
+        {
+            switch (choice)
+            {
+                case Choice::Yes:
+                  system("cls");
+                  std::cout << "Spelet g\x86r ut p\x86 att du kommer sl\x86 tv\x86 stycken sexsiffringa t\x84rningar,\ndu ska gissa p\x86 ett tal mellan 2 till 12.\n";
+                  std::cout << "Om din gissning \x84r lika med summan av de tv\x86 t\x84rningarna vinner du 2x av de satsade pengarna!\n";
+                  break;
+                case Choice::No:
+                  break;
+                case Choice::Leave:
+            }
+        }
+    */
+
         functions::PlaceBet(data);
         const int bet = data.currentBet;
 
@@ -22,12 +56,10 @@ namespace casino::dice
         while (true)
         {
             std::cout << "Gissa summan av tv\x86 t\x84rningar ("
-                      << constants::diceMinimumGuess << "-"
-                      << constants::diceMaximumGuess << "): ";
+                      << Values::diceMinimumGuess << "-"
+                      << Values::diceMaximumGuess << "): ";
 
-            if (std::cin >> guess &&
-                guess >= constants::diceMinimumGuess &&
-                guess <= constants::diceMaximumGuess)
+            if (std::cin >> guess && guess >= Values::diceMinimumGuess && guess <= Values::diceMaximumGuess)
             {
                 break;
             }
@@ -50,7 +82,7 @@ namespace casino::dice
         if (guess == sum)
         {
             winnings = bet;
-            data.balance += bet * constants::normalPayout;
+            data.balance += bet * Values::normalPayout;
             std::cout << "du vann!\n";
         }
         else

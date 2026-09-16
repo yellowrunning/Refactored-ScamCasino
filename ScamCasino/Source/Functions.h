@@ -1,7 +1,7 @@
 #pragma once
 #include "GameData.h"
 
-namespace casino::functions
+namespace Casino::functions
 {
     int GetRndInt();
     void Enter();

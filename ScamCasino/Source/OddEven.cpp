@@ -1,10 +1,10 @@
 #include "OddEven.h"
 #include "Functions.h"
-#include "Constants.h"
+#include "Values.h"
 #include "Statistics.h"
 #include <iostream>
 
-namespace casino::oddEven
+namespace Casino::oddEven
 {
     void Play(GameData& data, StatisticsData& statistics)
     {
@@ -50,7 +50,7 @@ namespace casino::oddEven
         if (won)
         {
             winnings = bet;
-            data.balance += bet * constants::normalPayout;
+            data.balance += bet * Values::normalPayout;
             std::cout << "du vann!\n";
         }
         else
