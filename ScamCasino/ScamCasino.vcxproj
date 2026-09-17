@@ -26,10 +26,12 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\MainMenu.cpp" />
     <ClCompile Include="Source\OddEven.cpp" />
+    <ClCompile Include="Source\Roulette.cpp" />
     <ClCompile Include="Source\Statistics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\CoinFlip.h" />
+    <ClInclude Include="Source\Roulette.h" />
     <ClInclude Include="Source\Values.h" />
     <ClInclude Include="Source\Dice.h" />
     <ClInclude Include="Source\DiceBaccarat.h" />

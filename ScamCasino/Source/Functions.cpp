@@ -16,6 +16,7 @@ namespace Casino::functions
     void Enter()
     {
         std::cout << "\ntryck p\x86 enter f\x94r att forts\x84tta\n";
+        std::cin.clear();
         std::cin.ignore(10000, '\n');
         std::cin.get();
     }
@@ -24,6 +25,8 @@ namespace Casino::functions
     {
         while (true)
         {
+            system("cls");
+
             std::cout << "Satsa pengar:\n";
             std::cout << "Kontobalans: " << data.balance << "kr\n> ";
 
@@ -52,6 +55,8 @@ namespace Casino::functions
             return statistics.baccaratProfit;
         case Game::CoinFlip:
             return statistics.coinFlipProfit;
+        case Game::Roulette:
+            return statistics.rouletteProfit;
         default:
             return 0;
         }
@@ -79,6 +84,8 @@ namespace Casino::functions
             break;
         case Game::CoinFlip:
             statistics.coinFlipProfit += winnings;
+        case Game::Roulette:
+            statistics.rouletteProfit += winnings;
             break;
         default:
             break;
@@ -92,11 +99,13 @@ namespace Casino::functions
         case Game::Dice:
             return "Dice";
         case Game::OddEven:
-            return "Udda/Ja\x84mnt";
+            return "Udda/J\x84mnt";
         case Game::DiceBaccarat:
             return "Dice Baccarat";
         case Game::CoinFlip:
             return "Coinflip";
+        case Game::Roulette:
+            return "Roulette";
         default:
             return "Tomt";
         }

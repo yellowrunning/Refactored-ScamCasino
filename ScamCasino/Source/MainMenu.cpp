@@ -5,6 +5,7 @@
 #include "OddEven.h"
 #include "DiceBaccarat.h"
 #include "CoinFlip.h"
+#include "Roulette.h"
 #include "Statistics.h"
 #include <iostream>
 #include "Functions.h"
@@ -23,17 +24,15 @@ namespace Casino::menu
             std::cout << "2. Udda/Ja\x84mnt\n";
             std::cout << "3. Dice Baccarat\n";
             std::cout << "4. Coinflip\n";
-            std::cout << "5. Statistik\n";
-            std::cout << "6. St\x84ng ner spelet\n\n";
+            std::cout << "5. Roulette\n";
+            std::cout << "6. Statistik\n";
+            std::cout << "7. St\x84ng ner spelet\n\n";
 
-            if (std::cin >> choice && choice >= 1 && choice <= 6)
+            if (std::cin >> choice && choice >= 1 && choice <= 7)
             {
                 return static_cast<Game>(choice);
             }
-
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-            std::cout << "V\x84lj ett nummer mellan 1 och 6.\n";
+            std::cout << "V\x84lj ett nummer mellan 1 och 7.\n";
             functions::Enter();
         }
     }
@@ -57,15 +56,23 @@ namespace Casino::menu
                 dice::Play(data, statistics);
                 break;
             case Game::OddEven:
+                system("cls");
                 oddEven::Play(data, statistics);
                 break;
             case Game::DiceBaccarat:
+                system("cls");
                 diceBaccarat::Play(data, statistics);
                 break;
             case Game::CoinFlip:
+                system("cls");
                 coinFlip::Play(data, statistics);
                 break;
+            case Game::Roulette:
+                system("cls");
+                roulette::Play(data, statistics);
+                break;
             case Game::Statistics:
+                system("cls");
                 statistics::Show(statistics, data);
                 break;
             case Game::Exit:

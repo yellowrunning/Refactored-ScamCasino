@@ -9,8 +9,9 @@ namespace Casino
         OddEven = 2,
         DiceBaccarat = 3,
         CoinFlip = 4,
-        Statistics = 5,
-        Exit = 6
+        Roulette = 5,
+        Statistics = 6,
+        Exit = 7
     };
 
     enum class CoinSide
@@ -34,8 +35,8 @@ namespace Casino
 
     enum class Choice
     {
-        Yes = 1,
-        No = 2,
+        Instructions = 1,
+        Play = 2,
         Leave = 3
     };
 
@@ -60,5 +61,6 @@ namespace Casino
         int oddEvenProfit{};
         int baccaratProfit{};
         int coinFlipProfit{};
+        int rouletteProfit{};
     };
 }

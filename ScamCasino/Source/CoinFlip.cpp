@@ -16,23 +16,66 @@ namespace Casino::coinFlip
             return;
         }
 
+        bool playGame{ false };
+
+        while (!playGame)
+        {
+            int input{};
+
+            std::cout << "1. Instruktioner\n";
+            std::cout << "2. Spela\n";
+            std::cout << "3. L\x84mna bord\n\n";
+
+            if (std::cin >> input && input >= 1 && input <= 3)
+            {
+                Choice choice = static_cast<Choice>(input);
+
+                switch (choice)
+                {
+                case Choice::Instructions:
+                    system("cls");
+
+                    std::cout << "Du kommer flippa ett mynt.\n";
+                    std::cout << "Myntet kan landa p\x86 krona eller klave.\n";
+                    std::cout << "R\x84tt gissning ger 2x utbetalning!\n";
+
+                    functions::Enter();
+                    system("cls");
+                    break;
+
+                case Choice::Play:
+                    system("cls");
+                    playGame = true;
+                    break;
+
+                case Choice::Leave:
+                    return;
+                }
+            }
+            else
+            {
+                std::cout << "Skriv bara 1 eller 2 eller 3.\n";
+                functions::Enter();
+                system("cls");
+            }
+        }
+
         functions::PlaceBet(data);
         const int bet = data.currentBet;
 
         int guess{};
         while (true)
         {
-            std::cout << "1. Krona\n";
+            std::cout << "\n1. Krona\n";
             std::cout << "2. Klave\n> ";
 
             if (std::cin >> guess && guess >= Values::coinMinimum && guess <= Values::coinMaximum)
             {
                 break;
             }
-
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
             std::cout << "V\x84lj bara 1 eller 2.\n";
+            functions::Enter();
+            system("cls");
         }
 
         const CoinSide choice = static_cast<CoinSide>(guess);
@@ -47,22 +90,22 @@ namespace Casino::coinFlip
 
         if (result == CoinSide::Heads)
         {
-            std::cout << "Myntet blev Krona!\n";
+            std::cout << "\nMyntet blev Krona!\n";
         }
         else
         {
-            std::cout << "Myntet blev Klave!\n";
+            std::cout << "\nMyntet blev Klave!\n";
         }
 
         if (choice == result)
         {
             winnings = bet;
             data.balance += bet * Values::normalPayout;
-            std::cout << "du vann!\n";
+            std::cout << "Du vann!\n";
         }
         else
         {
-            std::cout << "du f\x94rlorade.\n";
+            std::cout << "Du f\x94rlorade.\n";
         }
 
         functions::AddStats(statistics, Game::CoinFlip, bet, winnings);

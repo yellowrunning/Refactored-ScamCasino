@@ -15,22 +15,66 @@ namespace Casino::oddEven
             return;
         }
 
+        bool playGame{ false };
+
+        while (!playGame)
+        {
+            int input{};
+
+            std::cout << "1. Instruktioner\n";
+            std::cout << "2. Spela\n";
+            std::cout << "3. L\x84mna bord\n\n";
+
+            if (std::cin >> input && input >= 1 && input <= 3)
+            {
+                Choice choice = static_cast<Choice>(input);
+
+                switch (choice)
+                {
+                case Choice::Instructions:
+                    system("cls");
+
+                    std::cout << "Spelet g\x86r ut p\x86 att du kommer sl\x86 tv\x86 stycken sexsiffringa t\x84rningar\n";
+                    std::cout << "Du ska gissa p\x86 udda eller j\x84mnt.";
+                    std::cout << "\nOm de tv\x86 t\x84rningarna sl\x86r det du gissade p\x86 vinner du 2x de pengarna du satsade!\n";
+                    std::cout << "Om t\x84rningarna sl\x86r udda och j\x84mnt f\x94rlorar du alltid.\n";
+
+                    functions::Enter();
+                    system("cls");
+                    break;
+
+                case Choice::Play:
+                    system("cls");
+                    playGame = true;
+                    break;
+
+                case Choice::Leave:
+                    return;
+                }
+            }
+            else
+            {
+                std::cout << "Skriv bara 1 eller 2 eller 3.\n";
+                functions::Enter();
+                system("cls");
+            }
+        }
+
         functions::PlaceBet(data);
         const int bet = data.currentBet;
 
         int guess{};
         while (true)
         {
-            std::cout << "Skriv Udda (1) eller J\x84mnt (2): ";
+            std::cout << "\nGissa Udda (1) eller J\x84mnt (2)\n>";
 
             if (std::cin >> guess && (guess == 1 || guess == 2))
             {
                 break;
             }
-
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
             std::cout << "Skriv bara 1 eller 2.\n";
+            functions::Enter();
+            system("cls");
         }
 
         const OddEvenChoice choice = static_cast<OddEvenChoice>(guess);
@@ -45,17 +89,17 @@ namespace Casino::oddEven
         data.balance -= bet;
         int winnings = -bet;
 
-        std::cout << "Du fick " << numberA << " och " << numberB << ".\n";
+        std::cout << "\nDu fick " << numberA << " och " << numberB << ".\n\n";
 
         if (won)
         {
             winnings = bet;
             data.balance += bet * Values::normalPayout;
-            std::cout << "du vann!\n";
+            std::cout << "Du vann!\n";
         }
         else
         {
-            std::cout << "du f\x94rlorade.\n";
+            std::cout << "Du f\x94rlorade.\n";
         }
 
         functions::AddStats(statistics, Game::OddEven, bet, winnings);

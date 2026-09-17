@@ -31,6 +31,7 @@ namespace Casino::statistics
         std::cout << "Udda/Ja\x84mnt: " << statistics.oddEvenProfit << "kr\n";
         std::cout << "Dice Baccarat: " << statistics.baccaratProfit << "kr\n";
         std::cout << "Coinflip: " << statistics.coinFlipProfit << "kr\n";
+        std::cout << "Roulette: " << statistics.rouletteProfit << "kr\n";
         std::cout << "\nKontobalans: " << data.balance << "kr\n";
 
         functions::Enter();
