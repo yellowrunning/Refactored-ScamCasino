@@ -21,7 +21,7 @@ namespace Casino::menu
             system("cls");
             std::cout << "V\x84lkommen till ScamCasino!\n";
             std::cout << "1. Dice\n";
-            std::cout << "2. Udda/Ja\x84mnt\n";
+            std::cout << "2. Udda/J\x84mnt\n";
             std::cout << "3. Dice Baccarat\n";
             std::cout << "4. Coinflip\n";
             std::cout << "5. Roulette\n";
@@ -41,7 +41,7 @@ namespace Casino::menu
     {
         GameData data{};
         StatisticsData statistics{};
-        data.balance = Values::startingMoney;
+        data.balance = Values::globalstartingMoney;
 
         bool running = true;
 

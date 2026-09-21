@@ -94,7 +94,7 @@ namespace Casino::oddEven
         if (won)
         {
             winnings = bet;
-            data.balance += bet * Values::normalPayout;
+            data.balance += bet * Values::globalnormalPayout;
             std::cout << "Du vann!\n";
         }
         else
