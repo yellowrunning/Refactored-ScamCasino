@@ -82,6 +82,7 @@ namespace Casino::functions
             break;
         case Game::CoinFlip:
             statistics.coinFlipProfit += winnings;
+            break;
         case Game::Roulette:
             statistics.rouletteProfit += winnings;
             break;
