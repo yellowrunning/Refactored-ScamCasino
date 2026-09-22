@@ -113,13 +113,13 @@ namespace Casino::diceBaccarat
         {
             if (winner == BaccaratBet::Tie)
             {
-                winnings = bet * (Values::baccaratTiePayout - 1);
-                data.balance += bet * Values::baccaratTiePayout;
+                winnings = bet * (Values::globalbaccaratTiePayout - 1);
+                data.balance += bet * Values::globalbaccaratTiePayout;
             }
             else
             {
                 winnings = bet;
-                data.balance += bet * Values::normalPayout;
+                data.balance += bet * Values::globalnormalPayout;
             }
 
             std::cout << "Du vann!\n";

@@ -186,7 +186,7 @@ namespace Casino::roulette
                 {
                     won = true;
                     winnings = bet;
-                    data.balance += (bet * Values::normalPayout);
+                    data.balance += (bet * Values::globalnormalPayout);
                 }
             }
             break;
@@ -199,7 +199,7 @@ namespace Casino::roulette
                 {
                     won = true;
                     winnings = bet;
-                    data.balance += (bet * Values::normalPayout);
+                    data.balance += (bet * Values::globalnormalPayout);
                 }
             }
             break;

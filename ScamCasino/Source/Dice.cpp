@@ -67,10 +67,10 @@ namespace Casino::dice
         while (true)
         {
             std::cout << "\nGissa summan av tv\x86 t\x84rningar ("
-                      << Values::diceMinimumGuess << "-"
-                      << Values::diceMaximumGuess << "): ";
+                      << Values::globaldiceMinimumGuess << "-"
+                      << Values::globaldiceMaximumGuess << "): ";
 
-            if (std::cin >> guess && guess >= Values::diceMinimumGuess && guess <= Values::diceMaximumGuess)
+            if (std::cin >> guess && guess >= Values::globaldiceMinimumGuess && guess <= Values::globaldiceMaximumGuess)
             {
                 break;
             }
@@ -92,7 +92,7 @@ namespace Casino::dice
         if (guess == sum)
         {
             winnings = bet;
-            data.balance += bet * Values::normalPayout;
+            data.balance += bet * Values::globalnormalPayout;
             std::cout << "Du vann!\n";
         }
         else

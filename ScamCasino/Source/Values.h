@@ -2,20 +2,20 @@
 
 namespace Casino::Values
 {
-    constexpr int startingMoney = 1000;
-    constexpr int minimumBet = 1;
+    constexpr int globalstartingMoney = 1000;
+    constexpr int globalminimumBet = 1;
 
-    constexpr int diceSides = 6;
-    constexpr int diceMinimumGuess = 2;
-    constexpr int diceMaximumGuess = 12;
+    constexpr int globaldiceSides = 6;
+    constexpr int globaldiceMinimumGuess = 2;
+    constexpr int globaldiceMaximumGuess = 12;
 
-    constexpr int normalPayout = 2;
-    constexpr int baccaratTiePayout = 10;
+    constexpr int globalnormalPayout = 2;
+    constexpr int globalbaccaratTiePayout = 10;
 
-    constexpr int maxRecentGames = 5;
-    constexpr int moneyMessageLimit = 0;
-    constexpr int securityLimit = 500;
+    constexpr int globalmaxRecentGames = 5;
+    constexpr int globalmoneyMessageLimit = 0;
+    constexpr int globalsecurityLimit = 500;
 
-    constexpr int coinMinimum = 1;
-    constexpr int coinMaximum = 2;
+    constexpr int globalcoinMinimum = 1;
+    constexpr int globalcoinMaximum = 2;
 }

@@ -9,7 +9,7 @@ namespace Casino::functions
     {
         std::random_device seed;
         std::mt19937 rndEngine(seed());
-        std::uniform_int_distribution<int> rndDist(1, Values::diceSides);
+        std::uniform_int_distribution<int> rndDist(1, Values::globaldiceSides);
         return rndDist(rndEngine);
     }
 
@@ -31,15 +31,13 @@ namespace Casino::functions
             std::cout << "Kontobalans: " << data.balance << "kr\n> ";
 
             if (std::cin >> data.currentBet &&
-                data.currentBet >= Values::minimumBet &&
+                data.currentBet >= Values::globalminimumBet &&
                 data.currentBet <= data.balance)
             {
                 return data.currentBet;
             }
-
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-            std::cout << "Skriv en giltig summa.\n";
+            std::cout << "\nSkriv en giltig summa.\n";
+            Enter();
         }
     }
 
@@ -64,7 +62,7 @@ namespace Casino::functions
 
     void AddStats(StatisticsData& statistics, Game game, int bet, int winnings)
     {
-        for (int i = Values::maxRecentGames - 1; i > 0; --i)
+        for (int i = Values::globalmaxRecentGames - 1; i > 0; --i)
         {
             statistics.recentGames[i] = statistics.recentGames[i - 1];
         }
@@ -84,6 +82,7 @@ namespace Casino::functions
             break;
         case Game::CoinFlip:
             statistics.coinFlipProfit += winnings;
+            break;
         case Game::Roulette:
             statistics.rouletteProfit += winnings;
             break;
@@ -115,12 +114,12 @@ namespace Casino::functions
     {
         const int money = GetTableProfit(statistics, game);
 
-        if (money > Values::moneyMessageLimit)
+        if (money > Values::globalmoneyMessageLimit)
         {
             std::cout << "Du har tj\x84rnat " << money << "kr vid "
                       << TranslateGameId(game) << "-bordet!\n";
         }
-        else if (money < Values::moneyMessageLimit)
+        else if (money < Values::globalmoneyMessageLimit)
         {
             std::cout << "Du har tappat " << -money << "kr vid "
                       << TranslateGameId(game) << "-bordet.\n";
@@ -134,7 +133,7 @@ namespace Casino::functions
 
     bool CheckTooMuch(const StatisticsData& statistics, Game game)
     {
-        if (GetTableProfit(statistics, game) > Values::securityLimit)
+        if (GetTableProfit(statistics, game) > Values::globalsecurityLimit)
         {
             std::cout << "Du har vunnit f\x94r mycket vid det h\x84r bordet!\n";
             std::cout << "GTFO\n";

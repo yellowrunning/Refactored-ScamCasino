@@ -69,7 +69,7 @@ namespace Casino::coinFlip
             std::cout << "\n1. Krona\n";
             std::cout << "2. Klave\n> ";
 
-            if (std::cin >> guess && guess >= Values::coinMinimum && guess <= Values::coinMaximum)
+            if (std::cin >> guess && guess >= Values::globalcoinMinimum && guess <= Values::globalcoinMaximum)
             {
                 break;
             }
@@ -82,7 +82,7 @@ namespace Casino::coinFlip
 
         std::random_device seed;
         std::mt19937 rndEngine(seed());
-        std::uniform_int_distribution<int> rndCoin(Values::coinMinimum, Values::coinMaximum);
+        std::uniform_int_distribution<int> rndCoin(Values::globalcoinMinimum, Values::globalcoinMaximum);
         const CoinSide result = static_cast<CoinSide>(rndCoin(rndEngine));
 
         data.balance -= bet;
@@ -100,7 +100,7 @@ namespace Casino::coinFlip
         if (choice == result)
         {
             winnings = bet;
-            data.balance += bet * Values::normalPayout;
+            data.balance += bet * Values::globalnormalPayout;
             std::cout << "Du vann!\n";
         }
         else
