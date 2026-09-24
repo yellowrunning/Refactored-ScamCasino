@@ -1,13 +1,11 @@
 #include "Roulette.h"
 #include "Functions.h"
 #include "Values.h"
-#include "Statistics.h"
 #include <iostream>
 #include <random>
 #include <array>
 
-
-namespace Casino::roulette
+namespace Casino
 {
     namespace
     {
@@ -33,20 +31,53 @@ namespace Casino::roulette
         }
     }
 
-    void Play(GameData& data, StatisticsData& statistics)
+    Roulette::Roulette(int aMinBet, int aMaxBet)
+        : myMinBet(aMinBet)
+        , myMaxBet(aMaxBet)
+        , myProfit(0)
     {
-        functions::Money(statistics, Game::Roulette);
 
-        if (functions::CheckTooMuch(statistics, Game::Roulette))
+    }
+
+    int Roulette::GetProfit() const
+    {
+        return myProfit;
+    }
+
+    void Roulette::Play(GameData& aData, const char* aPlayerName)
+    {
+        if (aData.balance < myMinBet)
         {
+            system("cls");
+            std::cout << "Tyv\x84rr " << aPlayerName << ", du f\x86r inte spela h\x84.\n";
+            std::cout << "Detta bord kr\x84ver minst " << myMinBet << "kr p\x86 kontot.\n";
+            functions::Enter();
             return;
         }
 
-        bool playGame{ false };
+        static bool firstTime = true;
+        if (firstTime)
+        {
+            system("cls");
+            std::cout << "V\x84lkommen till Roulette, " << aPlayerName << "!";
+            std::cout << "\nSaldo: " << aData.balance << "kr\n\n";
+            std::cout << "=== REGLER ===\n";
+            std::cout << "Detta \x84r det du kan satsa p\x86:\n";
+            std::cout << "1. Straight (Gissa exakt nummer 0-36) Utbetalning: 36x\n";
+            std::cout << "2. Red/Black (Red eller Black) Utbetalning: 2x\n";
+            std::cout << "3. Odd/Even (Udda eller J\x84mnt) Utbetalning: 2x\n";
+            std::cout << "4. Column Bet (Kolumn 1, 2 eller 3) Utbetalning: 3x\n";
+            std::cout << "Om kulan landar p\x86 0 vinner du bara om du satsade p\x86 0!\n";
 
+            functions::Enter();
+            firstTime = false;
+        }
+
+        bool playGame = false;
         while (!playGame)
         {
-            int input{};
+            system("cls");
+            int input = 0;
             std::cout << "1. Instruktioner\n";
             std::cout << "2. Spela\n";
             std::cout << "3. L\x84mna bord\n\n> ";
@@ -58,6 +89,7 @@ namespace Casino::roulette
                 switch (choice)
                 {
                 case Choice::Instructions:
+                {
                     system("cls");
                     std::cout << "===== Roulette =====\n";
                     std::cout << "Detta \x84r det du kan satsa p\x86:\n";
@@ -67,30 +99,30 @@ namespace Casino::roulette
                     std::cout << "4. Column Bet (Kolumn 1, 2 eller 3) Utbetalning: 3x\n";
                     std::cout << "Om kulan landar p\x86 0 vinner du bara om du satsade p\x86 0!\n";
                     functions::Enter();
-                    system("cls");
                     break;
-
+                }
                 case Choice::Play:
-                    system("cls");
+                {
                     playGame = true;
                     break;
-
+                }
                 case Choice::Leave:
+                {
                     return;
+                }
                 }
             }
             else
             {
                 std::cout << "Skriv bara 1, 2 eller 3.\n";
                 functions::Enter();
-                system("cls");
             }
         }
 
-        functions::PlaceBet(data);
-        const int bet = data.currentBet;
+        functions::PlaceBet(aData, myMinBet, myMaxBet);
+        const int bet = aData.currentBet;
 
-        int betChoice{};
+        int betChoice = 0;
         while (true)
         {
             system("cls");
@@ -109,11 +141,12 @@ namespace Casino::roulette
         }
 
         const BetType type = static_cast<BetType>(betChoice);
-        int guess{};
+        int guess = 0;
 
         switch (type)
         {
         case BetType::Straight:
+        {
             while (true)
             {
                 system("cls");
@@ -123,8 +156,9 @@ namespace Casino::roulette
                 functions::Enter();
             }
             break;
-
+        }
         case BetType::RedBlack:
+        {
             while (true)
             {
                 system("cls");
@@ -134,8 +168,9 @@ namespace Casino::roulette
                 functions::Enter();
             }
             break;
-
+        }
         case BetType::OddEven:
+        {
             while (true)
             {
                 system("cls");
@@ -145,8 +180,9 @@ namespace Casino::roulette
                 functions::Enter();
             }
             break;
-
+        }
         case BetType::Column:
+        {
             while (true)
             {
                 system("cls");
@@ -157,28 +193,31 @@ namespace Casino::roulette
             }
             break;
         }
+        }
 
         std::random_device seed;
         std::mt19937 rndEngine(seed());
         std::uniform_int_distribution<int> rouletteWheel(0, 36);
         const int winningNumber = rouletteWheel(rndEngine);
 
-        data.balance -= bet;
+        aData.balance -= bet;
         int winnings = -bet;
-        bool won{ false };
+        bool won = false;
 
         switch (type)
         {
         case BetType::Straight:
+        {
             if (guess == winningNumber)
             {
                 won = true;
                 winnings = bet * 35;
-                data.balance += (bet * 36);
+                aData.balance += (bet * 36);
             }
             break;
-
+        }
         case BetType::RedBlack:
+        {
             if (winningNumber != 0)
             {
                 bool winningIsRed = Red(winningNumber);
@@ -186,12 +225,13 @@ namespace Casino::roulette
                 {
                     won = true;
                     winnings = bet;
-                    data.balance += (bet * Values::globalnormalPayout);
+                    aData.balance += (bet * Values::globalNormalPayout);
                 }
             }
             break;
-
+        }
         case BetType::OddEven:
+        {
             if (winningNumber != 0)
             {
                 bool winningIsOdd = (winningNumber % 2 != 0);
@@ -199,22 +239,24 @@ namespace Casino::roulette
                 {
                     won = true;
                     winnings = bet;
-                    data.balance += (bet * Values::globalnormalPayout);
+                    aData.balance += (bet * Values::globalNormalPayout);
                 }
             }
             break;
-
+        }
         case BetType::Column:
+        {
             if (winningNumber != 0)
             {
                 if (guess == GetColumn(winningNumber))
                 {
                     won = true;
                     winnings = bet * 2;
-                    data.balance += (bet * 3);
+                    aData.balance += (bet * 3);
                 }
             }
             break;
+        }
         }
 
         system("cls");
@@ -234,16 +276,15 @@ namespace Casino::roulette
 
         if (won)
         {
-            std::cout << "Du vann!\n";
+            std::cout << "Du vann, " << aPlayerName << "!\n";
         }
         else
         {
             std::cout << "Du f\x94rlorade.\n";
         }
 
-        functions::AddStats(statistics, Game::Roulette, bet, winnings);
-        std::cout << "Kontobalans: " << data.balance << "kr\n";
-        functions::CheckMoney(data);
-        statistics::Show(statistics, data);
+        myProfit += winnings;
+        std::cout << "Kontobalans: " << aData.balance << "kr\n";
+        functions::Enter();
     }
 }

@@ -24,7 +24,7 @@
     <ClCompile Include="Source\DiceBaccarat.cpp" />
     <ClCompile Include="Source\Functions.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\MainMenu.cpp" />
+    <ClCompile Include="Source\CasinoSystem.cpp" />
     <ClCompile Include="Source\OddEven.cpp" />
     <ClCompile Include="Source\Roulette.cpp" />
     <ClCompile Include="Source\Statistics.cpp" />
@@ -37,7 +37,7 @@
     <ClInclude Include="Source\DiceBaccarat.h" />
     <ClInclude Include="Source\Functions.h" />
     <ClInclude Include="Source\GameData.h" />
-    <ClInclude Include="Source\MainMenu.h" />
+    <ClInclude Include="Source\CasinoSystem.h" />
     <ClInclude Include="Source\OddEven.h" />
     <ClInclude Include="Source\Statistics.h" />
   </ItemGroup>

@@ -1,7 +1,20 @@
 #pragma once
 #include "GameData.h"
 
-namespace Casino::coinFlip
+namespace Casino
 {
-    void Play(GameData& data, StatisticsData& statistics);
+	class CoinFlip
+	{
+	public:
+		CoinFlip(int aMinBet, int aMaxBet);
+
+		void Play(GameData& aData, const char* aPlayerName);
+
+		int GetProfit() const;
+
+	private:
+		int myMinBet;
+		int myMaxBet;
+		int myProfit;
+	};
 }

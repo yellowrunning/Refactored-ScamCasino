@@ -1,26 +1,55 @@
 #include "CoinFlip.h"
 #include "Functions.h"
 #include "Values.h"
-#include "Statistics.h"
 #include <iostream>
 #include <random>
 
-namespace Casino::coinFlip
+namespace Casino
 {
-    void Play(GameData& data, StatisticsData& statistics)
+    CoinFlip::CoinFlip(int aMinBet, int aMaxBet)
+        : myMinBet(aMinBet)
+        , myMaxBet(aMaxBet)
+        , myProfit(0)
     {
-        functions::Money(statistics, Game::CoinFlip);
 
-        if (functions::CheckTooMuch(statistics, Game::CoinFlip))
+    }
+
+    int CoinFlip::GetProfit() const
+    {
+        return myProfit;
+    }
+
+    void CoinFlip::Play(GameData& aData, const char* aPlayerName)
+    {
+        if (aData.balance < myMinBet)
         {
+            system("cls");
+            std::cout << "Tyv\x84rr " << aPlayerName << ", du f\x86r inte spela h\x84.\n";
+            std::cout << "Detta bord kr\x84ver minst " << myMinBet << "kr p\x86 kontot.\n";
+            functions::Enter();
             return;
         }
 
-        bool playGame{ false };
+        static bool firstTime = true;
+        if (firstTime)
+        {
+            system("cls");
+            std::cout << "V\x84lkommen till Coinflip, " << aPlayerName << "!";
+            std::cout << "\nSaldo: " << aData.balance << "kr\n\n";
+            std::cout << "=== REGLER ===\n";
+            std::cout << "Du kommer flippa ett mynt.\n";
+            std::cout << "Myntet kan landa p\x86 krona eller klave.\n";
+            std::cout << "R\x84tt gissning ger 2x utbetalning!\n";
 
+            functions::Enter();
+            firstTime = false;
+        }
+
+        bool playGame = false;
         while (!playGame)
         {
-            int input{};
+            system("cls");
+            int input = 0;
 
             std::cout << "1. Instruktioner\n";
             std::cout << "2. Spela\n";
@@ -33,6 +62,7 @@ namespace Casino::coinFlip
                 switch (choice)
                 {
                 case Choice::Instructions:
+                {
                     system("cls");
 
                     std::cout << "Du kommer flippa ett mynt.\n";
@@ -40,52 +70,52 @@ namespace Casino::coinFlip
                     std::cout << "R\x84tt gissning ger 2x utbetalning!\n";
 
                     functions::Enter();
-                    system("cls");
                     break;
-
+                }
                 case Choice::Play:
-                    system("cls");
+                {
                     playGame = true;
                     break;
-
+                }
                 case Choice::Leave:
+                {
                     return;
+                }
                 }
             }
             else
             {
                 std::cout << "Skriv bara 1 eller 2 eller 3.\n";
                 functions::Enter();
-                system("cls");
             }
         }
 
-        functions::PlaceBet(data);
-        const int bet = data.currentBet;
+        functions::PlaceBet(aData, myMinBet, myMaxBet);
+        const int bet = aData.currentBet;
 
-        int guess{};
+        int guess = 0;
         while (true)
         {
+            system("cls");
             std::cout << "\n1. Krona\n";
             std::cout << "2. Klave\n> ";
 
-            if (std::cin >> guess && guess >= Values::globalcoinMinimum && guess <= Values::globalcoinMaximum)
+            if (std::cin >> guess && guess >= 1 && guess <= 2)
             {
                 break;
             }
             std::cout << "V\x84lj bara 1 eller 2.\n";
             functions::Enter();
-            system("cls");
         }
 
         const CoinSide choice = static_cast<CoinSide>(guess);
 
         std::random_device seed;
         std::mt19937 rndEngine(seed());
-        std::uniform_int_distribution<int> rndCoin(Values::globalcoinMinimum, Values::globalcoinMaximum);
+        std::uniform_int_distribution<int> rndCoin(1, 2);
         const CoinSide result = static_cast<CoinSide>(rndCoin(rndEngine));
 
-        data.balance -= bet;
+        aData.balance -= bet;
         int winnings = -bet;
 
         if (result == CoinSide::Heads)
@@ -100,17 +130,16 @@ namespace Casino::coinFlip
         if (choice == result)
         {
             winnings = bet;
-            data.balance += bet * Values::globalnormalPayout;
-            std::cout << "Du vann!\n";
+            aData.balance += bet * Values::globalNormalPayout;
+            std::cout << "Du vann, " << aPlayerName << "!\n";
         }
         else
         {
             std::cout << "Du f\x94rlorade.\n";
         }
 
-        functions::AddStats(statistics, Game::CoinFlip, bet, winnings);
-        std::cout << "Kontobalans: " << data.balance << "kr\n";
-        functions::CheckMoney(data);
-        statistics::Show(statistics, data);
+        myProfit += winnings;
+        std::cout << "Kontobalans: " << aData.balance << "kr\n";
+        functions::Enter();
     }
 }

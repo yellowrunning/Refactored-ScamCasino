@@ -1,25 +1,55 @@
 #include "DiceBaccarat.h"
 #include "Functions.h"
 #include "Values.h"
-#include "Statistics.h"
 #include <iostream>
 
-namespace Casino::diceBaccarat
+namespace Casino
 {
-    void Play(GameData& data, StatisticsData& statistics)
+    DiceBaccarat::DiceBaccarat(int aMinBet, int aMaxBet)
+        : myMinBet(aMinBet)
+        , myMaxBet(aMaxBet)
+        , myProfit(0)
     {
-        functions::Money(statistics, Game::DiceBaccarat);
 
-        if (functions::CheckTooMuch(statistics, Game::DiceBaccarat))
+    }
+
+    int DiceBaccarat::GetProfit() const
+    {
+        return myProfit;
+    }
+
+    void DiceBaccarat::Play(GameData& aData, const char* aPlayerName)
+    {
+        if (aData.balance < myMinBet)
         {
+            system("cls");
+            std::cout << "Tyv\x84rr " << aPlayerName << ", du f\x86r inte spela h\x84.\n";
+            std::cout << "Detta bord kr\x84ver minst " << myMinBet << "kr p\x86 kontot.\n";
+            functions::Enter();
             return;
         }
 
-        bool playGame{ false };
+        static bool firstTime = true;
+        if (firstTime)
+        {
+            system("cls");
+            std::cout << "V\x84lkommen till DiceBaccarat, " << aPlayerName << "!";
+            std::cout << "\nSaldo: " << aData.balance << "kr\n\n";
+            std::cout << "=== REGLER ===\n";
+            std::cout << "Det kommer att finnas tv\x86 spelare: Player // Banken.";
+            std::cout << "\nDu kan satsa p\x86 Player // Banken // Lika.";
+            std::cout << "\nDen som f\x86r h\x94gst sammanlagda nummer vinner!\nOm det blir lika vinner du bara om du satsade p\x86 lika.";
+            std::cout << "\n\nUtbetalning: 2x p\x86 en spelare // 10x p\x86 lika!!!\n";
 
+            functions::Enter();
+            firstTime = false;
+        }
+
+        bool playGame = false;
         while (!playGame)
         {
-            int input{};
+            system("cls");
+            int input = 0;
 
             std::cout << "1. Instruktioner\n";
             std::cout << "2. Spela\n";
@@ -32,6 +62,7 @@ namespace Casino::diceBaccarat
                 switch (choice)
                 {
                 case Choice::Instructions:
+                {
                     system("cls");
 
                     std::cout << "Det kommer att finnas tv\x86 spelare: Player // Banken.";
@@ -40,32 +71,33 @@ namespace Casino::diceBaccarat
                     std::cout << "\n\nUtbetalning: 2x p\x86 en spelare // 10x p\x86 lika!!!\n";
 
                     functions::Enter();
-                    system("cls");
                     break;
-
+                }
                 case Choice::Play:
-                    system("cls");
+                {
                     playGame = true;
                     break;
-
+                }
                 case Choice::Leave:
+                {
                     return;
+                }
                 }
             }
             else
             {
                 std::cout << "Skriv bara 1 eller 2 eller 3.\n";
                 functions::Enter();
-                system("cls");
             }
         }
 
-        functions::PlaceBet(data);
-        const int bet = data.currentBet;
+        functions::PlaceBet(aData, myMinBet, myMaxBet);
+        const int bet = aData.currentBet;
 
-        int guess{};
+        int guess = 0;
         while (true)
         {
+            system("cls");
             std::cout << "\nSatsning:\n\n";
             std::cout << "1. Player (2x)\n";
             std::cout << "2. Banken (2x)\n";
@@ -77,7 +109,6 @@ namespace Casino::diceBaccarat
             }
             std::cout << "Du kan bara gissa p\x86 1, 2 eller 3.\n";
             functions::Enter();
-            system("cls");
         }
 
         const BaccaratBet choice = static_cast<BaccaratBet>(guess);
@@ -100,38 +131,38 @@ namespace Casino::diceBaccarat
         {
             winner = BaccaratBet::Banker;
         }
+
         system("cls");
-        data.balance -= bet;
+        aData.balance -= bet;
         int winnings = -bet;
 
         std::cout << "Player fick " << playerA << " + " << playerB
-                  << " = " << playerTotal << "\n";
+            << " = " << playerTotal << "\n";
         std::cout << "Banken fick " << bankerA << " + " << bankerB
-                  << " = " << bankerTotal << "\n\n";
+            << " = " << bankerTotal << "\n\n";
 
         if (choice == winner)
         {
             if (winner == BaccaratBet::Tie)
             {
-                winnings = bet * (Values::globalbaccaratTiePayout - 1);
-                data.balance += bet * Values::globalbaccaratTiePayout;
+                winnings = bet * (Values::globalBaccaratTiePayout - 1);
+                aData.balance += bet * Values::globalBaccaratTiePayout;
             }
             else
             {
                 winnings = bet;
-                data.balance += bet * Values::globalnormalPayout;
+                aData.balance += bet * Values::globalNormalPayout;
             }
 
-            std::cout << "Du vann!\n";
+            std::cout << "Du vann, " << aPlayerName << "!\n";
         }
         else
         {
             std::cout << "Du f\x94rlorade.\n";
         }
 
-        functions::AddStats(statistics, Game::DiceBaccarat, bet, winnings);
-        std::cout << "Kontobalans: " << data.balance << "kr\n";
-        functions::CheckMoney(data);
-        statistics::Show(statistics, data);
+        myProfit += winnings;
+        std::cout << "Kontobalans: " << aData.balance << "kr\n";
+        functions::Enter();
     }
 }

@@ -5,23 +5,49 @@
 #include <iostream>
 #include "GameData.h"
 
-namespace Casino::dice
-{ 
-    void Play(GameData& data, StatisticsData& statistics)
+namespace Casino
+{
+    Dice::Dice(int aMinBet, int aMaxBet)
+        : myMinBet(aMinBet)
+        , myMaxBet(aMaxBet)
+        , myProfit(0)
     {
-        functions::Money(statistics, Game::Dice);
 
-        if (functions::CheckTooMuch(statistics, Game::Dice))
+    }
+
+    int Dice::GetProfit() const
+    {
+        return myProfit;
+    }
+
+    void Dice::Play(GameData& aData, const char* aPlayerName)
+    {
+        if (aData.balance < myMinBet)
         {
+            system("cls");
+            std::cout << "Tyv\x84rr " << aPlayerName << ", du f\x86r inte spela h\x84.\n";
+            std::cout << "Detta bord kr\x84ver minst " << myMinBet << "kr p\x86 kontot.\n";
+            functions::Enter();
             return;
         }
 
-        bool playGame{ false };
+        static bool firstTime = true;
+        if (firstTime)
+        {
+            system("cls");
+            std::cout << "V\x84lkommen till Dice " << aPlayerName << "!\n";
+            std::cout << "Saldo: " << aData.balance << "kr\n\n";
+            std::cout << "=== REGLER ===\n";
+            std::cout << "Du ska gissa summan av tv\x86 t\x84rningar (2-12). Vinst ger 2x pengarna!\n";
+            functions::Enter();
+            firstTime = false;
+        }
 
+        bool playGame = false;
         while (!playGame)
         {
-            int input{};
-
+            system("cls");
+            int input = 0;
             std::cout << "1. Instruktioner\n";
             std::cout << "2. Spela\n";
             std::cout << "3. L\x84mna bord\n\n";
@@ -29,80 +55,73 @@ namespace Casino::dice
             if (std::cin >> input && input >= 1 && input <= 3)
             {
                 Choice choice = static_cast<Choice>(input);
-
                 switch (choice)
                 {
                 case Choice::Instructions:
+                {
                     system("cls");
-
-                    std::cout << "Spelet g\x86r ut p\x86 att du kommer sl\x86 tv\x86 stycken sexsiffringa t\x84rningar.\n";
-                    std::cout << "Du ska gissa p\x86 ett tal mellan 2 till 12.\n";
-                    std::cout << "Om din gissning \x84r lika med summan av de tv\x86 t\x84rningarna vinner du 2x av de satsade pengarna!\n";
-
+                    std::cout << "=== REGLER ===\n";
+                    std::cout << "Du ska gissa summan av tv\x86 t\x84rningar (2-12). Vinst ger 2x pengarna!\n";
                     functions::Enter();
-                    system("cls");
                     break;
-
+                }
                 case Choice::Play:
-                    system("cls");
+                {
                     playGame = true;
                     break;
-
+                }
                 case Choice::Leave:
+                {
                     return;
+                }
                 }
             }
             else
             {
-                std::cout << "Skriv bara 1 eller 2 eller 3.\n";
+                std::cout << "Skriv bara 1, 2 eller 3.\n";
                 functions::Enter();
-                system("cls");
             }
         }
 
-        functions::PlaceBet(data);
-        const int bet = data.currentBet;
+        functions::PlaceBet(aData, myMinBet, myMaxBet);
+        const int bet = aData.currentBet;
 
-        int guess{};
+
+        int guess = 0;
         while (true)
         {
-            std::cout << "\nGissa summan av tv\x86 t\x84rningar ("
-                      << Values::globaldiceMinimumGuess << "-"
-                      << Values::globaldiceMaximumGuess << "): ";
-
-            if (std::cin >> guess && guess >= Values::globaldiceMinimumGuess && guess <= Values::globaldiceMaximumGuess)
+            system("cls");
+            std::cout << "\nGissa summan (2-12): ";
+            if (std::cin >> guess && guess >= 2 && guess <= 12)
             {
                 break;
             }
-            std::cout << "Skriv en summa mellan 2 och 12.\n";
+            std::cout << "Skriv ett nummer mellan 2 och 12.\n";
             functions::Enter();
-            system("cls");
         }
 
         const int numberA = functions::GetRndInt();
         const int numberB = functions::GetRndInt();
         const int sum = numberA + numberB;
 
-        data.balance -= bet;
+        aData.balance -= bet;
         int winnings = -bet;
 
-        std::cout << "Du fick " << numberA << " och " << numberB
-                  << " = " << sum << "\n\n";
+        std::cout << "Du fick " << numberA << " och " << numberB << " = " << sum << "\n";
 
         if (guess == sum)
         {
             winnings = bet;
-            data.balance += bet * Values::globalnormalPayout;
-            std::cout << "Du vann!\n";
+            aData.balance += (bet * Values::globalNormalPayout);
+            std::cout << "Bra gissat " << aPlayerName << ", du vann!\n";
         }
         else
         {
             std::cout << "Du f\x94rlorade.\n";
         }
+        myProfit += winnings;
 
-        functions::AddStats(statistics, Game::Dice, bet, winnings);
-        std::cout << "Kontobalans: " << data.balance << "kr\n";
-        functions::CheckMoney(data);
-        statistics::Show(statistics, data);
+        std::cout << "Kontobalans: " << aData.balance << "kr\n";
+        functions::Enter();
     }
 }

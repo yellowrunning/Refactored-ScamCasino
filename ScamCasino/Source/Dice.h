@@ -1,7 +1,20 @@
 #pragma once
 #include "GameData.h"
 
-namespace Casino::dice
+namespace Casino
 {
-    void Play(GameData& data, StatisticsData& statistics);
+	class Dice
+	{
+	public:
+		Dice(int aMinBet, int aMaxBet);
+
+		void Play(GameData& aData, const char* aPlayerName);
+
+		int GetProfit() const;
+
+	private:
+		int myMinBet;
+		int myMaxBet;
+		int myProfit;
+	};
 }

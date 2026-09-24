@@ -1,7 +1,9 @@
-#include "MainMenu.h"
+#include "CasinoSystem.h"
 
 int main()
 {
-    Casino::menu::Run();
-    return 0;
+	Casino::CasinoSystem casino;
+	casino.Run();
+
+	return 0;
 }
